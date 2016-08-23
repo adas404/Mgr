@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <h:form id="invitation_form">
+            <p:dataTable id="invitation" var="invitation" value="#{invitationBean.invitationList}" selectionMode="single" selection="#{invitationBean.invitation}" rowKey="#{invitation.idreservation}">
+                <p:ajax event="rowSelect" update=":invitation_form"/>
+                <p:column headerText="ID">
+                    <h:outputText value="#{invitation.idreservation}"/>
+                </p:column>
+                <p:column headerText="Nazwa imprezy">
+                    <h:outputText value="#{invitation.idshow.name}"/>
+                </p:column>
+                <p:column headerText="Wolnych miejsc">
+                    <h:outputText value="#{invitationBean.freeTicket(invitation.idshow)} / #{invitation.idshow.numSeats}"/>
+                </p:column>
+            </p:dataTable>
+            <h:form rendered="#{invitationBean.freeTicket() > 0}">
+            <p:commandButton value="Potwierdź" action="#{invitationBean.confirm()}" update=":invitation_form:invitation"/>
+            <p:commandButton value="Odrzuć" actionListener="#{invitationBean.discard()}" update=":invitation_form:invitation"/>
+            </h:form>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

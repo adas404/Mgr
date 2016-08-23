@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form style="text-align: center">
+        <h:outputText style="font: 16px Arial; color: white; text-align: center" value="Witamy w systemie rezerwacji miejsc na imprezach."/>
+        </h:form>
+        <h:form>
+            <p:growl id="growl" showDetail="true" sticky="true" redisplay="false" globalOnly="true"/> 
+            <p:panelGrid columnClasses="value">
+                <p:schedule value="#{publicEventBean.eventModel}" timeZone="GMT+2" timeFormat="HH:mm" style="width: 50%; margin: 0 auto; color: white" locale="pl">
+                    <p:ajax event="eventSelect" listener="#{publicEventBean.onEventSelect}" update="eventDialog" oncomplete="PF('dialog').show();"/>
+                </p:schedule>
+            </p:panelGrid>
+            <p:dialog widgetVar="dialog" header="Wprowadź dane do rezerwacji" showEffect="clip" hideEffect="clip" resizable="false">
+                <p:panelGrid id="eventDialog" columns="2">
+                    <h:outputText value="Nazwa imprezy: "/>
+                    <h:outputText value="#{publicEventBean.e.name}"/> 
+                    <h:outputText value="Wolnych miejsc: "/>
+                    <h:outputText value="#{publicEventBean.freeTicket()}"/>
+                    <h:outputText value="Imię: "/>
+                    <p:inputText value="#{publicEventBean.user.firstName}" required="true"/>
+                    <h:outputText value="Nazwisko: "/>
+                    <p:inputText value="#{publicEventBean.user.secondName}" required="true">
+                        <f:validateLength minimum="3"/>
+                    </p:inputText>
+                    <h:outputText value=" "/>
+                    <p:commandButton value="Rezerwuje" validateClient="true" disabled="#{publicEventBean.freeTicket() == 0}" action="#{publicEventBean.bookPublic()}" oncomplete="PF('dialog').hide();" update="growl"/>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+        <script type="text/javascript" src="toschedule.js">
+            
+        </script>
+    </ui:define>
+    
+</ui:composition>

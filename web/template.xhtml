@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <title>System rezerwacji miejsc na imprezach</title>
+    </h:head>
+
+    <h:body>
+
+        <div id="top" class="top">
+            <h:form id="menu_form">
+                <p:menubar>
+                    <p:submenu label="Panel administracyjny" rendered="#{type == 2}">
+                        <p:menuitem value="Użytkownicy" outcome="users"/>
+                        <p:menuitem value="Potwierdź użytkownika" outcome="check_user"/>
+                        <p:menuitem value="Imprezy" outcome="show_admin"/>
+                    </p:submenu>
+                    <p:submenu label="Imprezy" rendered="#{!loginBean.notLogged}">
+                        <p:menuitem value="Zaproszenia" outcome="invitation"/>
+                        <p:menuitem value="Weźmiesz udział" outcome="confirm_invitation"/>
+                        <p:menuitem value="Publiczne" outcome="public_event"/>
+                    </p:submenu>
+                    <p:menuitem value="Rejestracja" oncomplete="PF('dlgUserRegister').show()" rendered="#{loginBean.notLogged}"/>
+                    <p:menuitem value="Logowanie" oncomplete="PF('dlgUserLogin').show()" rendered="#{loginBean.notLogged}" update=":dlgUserLoginForm"/>
+                    <p:menuitem value="Wyloguj" action="#{loginBean.logout()}" update=":menu_form" rendered="#{! loginBean.notLogged}"/>
+                </p:menubar>
+            </h:form>
+            
+            <p:dialog widgetVar="dlgUserRegister">
+        <h:form id="dlgUserRegisterForm">
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Login"/>
+                <p:inputText value="#{userBean.user.login}"/>
+                <p:outputLabel value="Hasło"/>
+                <p:password value="#{userBean.user.password}"/>
+                <p:outputLabel value="Imię"/>
+                <p:inputText value="#{userBean.user.firstName}"/>
+                <p:outputLabel value="Nazwisko"/>
+                <p:inputText value="#{userBean.user.secondName}"/>
+                <p:outputLabel value="E-mail"/>
+                <p:inputText value="#{userBean.user.email}"/>
+                <p:outputLabel value="Data"/>
+                <p:calendar value="#{userBean.user.date}"/>
+            </p:panelGrid>
+            <p:commandButton value="Zatwierdź" icon="ui-icon-check" actionListener="#{userBean.addUser(0)}" oncomplete="PF('dlgUserRegister').hide()"/>
+        </h:form>
+    </p:dialog>
+            <p:dialog widgetVar="dlgUserLogin">
+                <h:form id="dlgUserLoginForm">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Login"/>
+                        <p:inputText value="#{loginBean.user.login}"/>
+                        <p:outputLabel value="Hasło"/>
+                        <p:password value="#{loginBean.user.password}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="Zatwierdź" actionListener="#{loginBean.checkLogin()}" oncomplete="PF('dlgUserLogin').hide()" update=":menu_form"/>
+                </h:form>
+            </p:dialog>
+        </div>
+
+        <div id="content" class="center_content">
+            <p:panel>
+            <ui:insert name="content">Content</ui:insert>
+            </p:panel>
+        </div>
+
+    </h:body>
+
+</html>

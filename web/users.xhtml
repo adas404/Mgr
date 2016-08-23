@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="users_form">
+        <p:dataTable id="users" var="user" value="#{userBean.users}" selectionMode="single" selection="#{userBean.user}" rowKey="#{user.iduser}">
+            <p:column headerText="ID">
+                <h:outputText value="#{user.iduser}"/>
+            </p:column>
+            <p:column headerText="Login">
+                <h:outputText value="#{user.login}"/>
+            </p:column>
+            <p:column headerText="Imię">
+                <h:outputText value="#{user.firstName}"/>
+            </p:column>
+            <p:column headerText="Nazwisko">
+                <h:outputText value="#{user.secondName}"/>
+            </p:column>
+            <p:column headerText="E-mail">
+                <h:outputText value="#{user.email}"/>
+            </p:column>
+            <p:column headerText="Data urodzenia">
+                <h:outputText value="#{user.date.toString()}"/>
+            </p:column>
+            <p:column headerText="Typ">
+                <h:outputText value="Normalny" rendered="#{user.type == 1}"/>
+                <h:outputText value="Administrator" rendered="#{user.type == 2}"/>
+            </p:column>
+        </p:dataTable>
+            <p:commandButton  value="Dodaj" oncomplete="PF('dlgUser').show()" update=":dlgUserForm"/>
+            <p:commandButton value="Usuń" action="#{userBean.deleteUser()}" update=":users_form:users"/>
+        </h:form>
+    
+
+    <p:dialog widgetVar="dlgUser">
+        <h:form id="dlgUserForm">
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Login"/>
+                <p:inputText value="#{userBean.user.login}"/>
+                <p:outputLabel value="Hasło"/>
+                <p:password value="#{userBean.user.password}"/>
+                <p:outputLabel value="Imię"/>
+                <p:inputText value="#{userBean.user.firstName}"/>
+                <p:outputLabel value="Nazwisko"/>
+                <p:inputText value="#{userBean.user.secondName}"/>
+                <p:outputLabel value="E-mail"/>
+                <p:inputText value="#{userBean.user.email}"/>
+                <p:outputLabel value="Data"/>
+                <p:calendar value="#{userBean.user.date}"/>
+                <p:outputLabel value="Typ"/>
+                <p:selectOneMenu id="type" value="#{userBean.user.type}">
+                    <f:selectItem itemLabel="Normalny" itemValue="1"/>
+                    <f:selectItem itemLabel="Administrator" itemValue="2"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p:commandButton value="Zatwierdź" icon="ui-icon-check" actionListener="#{userBean.addUser(1)}" update=":users_form:users" oncomplete="PF('dlgUser').hide()"/>
+        </h:form>
+    </p:dialog>
+        </ui:define>
+</ui:composition>
