@@ -8,10 +8,10 @@
 
     <ui:define name="content">
         <h:form style="text-align: center">
-        <h:outputText style="font: 16px Arial; color: white; text-align: center" value="Witamy w systemie rezerwacji miejsc na imprezach."/>
+            <h:outputText style="font: 16px Arial; color: white; text-align: center" value="Witamy w systemie rezerwacji miejsc na imprezach."/>
         </h:form>
         <h:form>
-            <p:growl id="growl" showDetail="true" sticky="true" redisplay="false" globalOnly="true"/> 
+            <p:growl id="growl" showDetail="true" sticky="true" redisplay="false" globalOnly="true" autoUpdate="true"/> 
             <p:panelGrid columnClasses="value">
                 <p:schedule value="#{publicEventBean.eventModel}" timeZone="GMT+2" timeFormat="HH:mm" style="width: 50%; margin: 0 auto; color: white" locale="pl">
                     <p:ajax event="eventSelect" listener="#{publicEventBean.onEventSelect}" update="eventDialog" oncomplete="PF('dialog').show();"/>
@@ -35,8 +35,7 @@
             </p:dialog>
         </h:form>
         <script type="text/javascript" src="toschedule.js">
-            
         </script>
     </ui:define>
-    
+
 </ui:composition>

@@ -6,6 +6,7 @@
 package config;
 
 import entity.User;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -44,6 +45,7 @@ public class LoginBean {
     public String checkLogin(){
         EntityManager em = DBManager.getManager().createEntityManager();
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        FacesContext context = FacesContext.getCurrentInstance();
         try{
             checkUser = (User) em.createQuery("SELECT u FROM User u WHERE u.login=:log AND u.password=:pass")
                     .setParameter("log", this.user.getLogin()).setParameter("pass", this.user.getPassword()).getSingleResult();
@@ -54,9 +56,11 @@ public class LoginBean {
         }catch(NoResultException e){
             user = new User();
             this.notLogged = true;
+            context.addMessage(null, new FacesMessage("Przykro nam!", "Nie udało się zalogować."));
             return "index";
         }
-        return "index";
+        context.addMessage(null, new FacesMessage("Gratulacje", "Zalogowano pomyślnie"));
+        return "public_event";
     }
     public String logout(){
         HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
