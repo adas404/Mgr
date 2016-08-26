@@ -7,7 +7,7 @@
 
     <ui:define name="content">
         <h:form id="invitation_form">
-            <p:dataTable id="invitation" var="invitation" value="#{invitationBean.invitationList}" selectionMode="single" selection="#{invitationBean.invitation}" rowKey="#{invitation.idreservation}">
+            <p:dataTable id="invitation" var="invitation" value="#{invitationBean.invitationList}" selectionMode="single" selection="#{invitationBean.invitation}" rowKey="#{invitation.idreservation}" emptyMessage="Brak zaproszeń">
                 <p:ajax event="rowSelect" update=":invitation_form"/>
                 <p:column headerText="ID">
                     <h:outputText value="#{invitation.idreservation}"/>

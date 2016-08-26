@@ -36,7 +36,7 @@
         </h:form>
         <h:form id="invitation_form">
             <p:fieldset id="fiel" legend="Zaproszenia" collapsed="true" toggleable="true" rendered="#{showBean.show.type == 1}">
-                <p:dataTable id="invicationDT" var="user" value="#{userBean.users}" selection="#{showBean.selectedUsers}" rowKey="#{user.iduser}">
+                <p:dataTable id="invicationDT" var="user" value="#{userBean.users}" selection="#{showBean.selectedUsers}" rowKey="#{user.iduser}" emptyMessage="Brak użytkowników">
                     <p:column selectionMode="multiple"/>
                     <p:column headerText="Imie">
                         <h:outputText value="#{user.firstName}"/>
@@ -50,7 +50,7 @@
         </h:form>
         <h:form id="take_part">
             <p:fieldset id="fieldsetf" legend="Wezmą udział" collapsed="true" toggleable="true">
-                <p:dataTable id="take_partDT" var="reservation" value="#{showBean.takePartUser}" rowKey="#{reservation.idreservation}" selection="#{showBean.res}" selectionMode="single">
+                <p:dataTable id="take_partDT" var="reservation" value="#{showBean.takePartUser}" rowKey="#{reservation.idreservation}" selection="#{showBean.res}" selectionMode="single" emptyMessage="Brak użytkowników">
                     <p:column headerText="Imię:">
                         <h:outputText value="#{reservation.iduser.firstName}"/>
                     </p:column>
@@ -67,15 +67,15 @@
                 <h:panelGroup>
                     <p:panelGrid columns="2" style="width: auto">
                         <p:outputLabel value="Nazwa"/>
-                        <p:inputText value="#{showBean.show.name}" required="true"/>
+                        <p:inputText value="#{showBean.show.name}" required="true" requiredMessage="Wpisz nazwę imprezy"/>
                         <p:outputLabel value="Adres"/>
-                        <p:inputText value="#{showBean.show.address}" required="true"/>
+                        <p:inputText value="#{showBean.show.address}" required="true" requiredMessage="Wpisz adres imprezy"/>
                         <p:outputLabel value="Liczba miejsc"/>
-                        <p:inputText value="#{showBean.show.numSeats}" required="true" label="Number">
+                        <p:inputText value="#{showBean.show.numSeats}" required="true" label="Number" requiredMessage="Wpisz liczbę miejsc od 1 do 1000">
                             <f:validateLongRange minimum="1" maximum="1000"/>
                         </p:inputText>
                         <p:outputLabel value="Data wydarzenia"/>
-                        <p:calendar value="#{showBean.show.date}" pattern="dd-MM-yyyy HH:mm:ss">
+                        <p:calendar value="#{showBean.show.date}" pattern="dd-MM-yyyy HH:mm:ss" rendered="true" requiredMessage="Wybierz datę">
                             <f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss"/>
                         </p:calendar>
                         <p:outputLabel value="Typ"/>

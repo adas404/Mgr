@@ -8,7 +8,7 @@
 
     <ui:define name="content">
         <h:form id="users_form">
-            <p:dataTable id="users" var="user" value="#{userBean.uncheckedUser}" selectionMode="single" selection="#{userBean.user}" rowKey="#{user.iduser}">
+            <p:dataTable id="users" var="user" value="#{userBean.uncheckedUser}" selectionMode="single" selection="#{userBean.user}" rowKey="#{user.iduser}" emptyMessage="Brak użytkowników do potwierdzenia">
             <p:column headerText="ID">
                 <h:outputText value="#{user.iduser}"/>
             </p:column>

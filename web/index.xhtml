@@ -11,9 +11,9 @@
             <h:outputText style="font: 16px Arial; color: white; text-align: center" value="Witamy w systemie rezerwacji miejsc na imprezach."/>
         </h:form>
         <h:form>
-            <p:growl id="growl" showDetail="true" sticky="true" redisplay="false" globalOnly="true" autoUpdate="true"/> 
+            <p:growl id="growl" showDetail="true" redisplay="false" autoUpdate="true" life="100"/> 
             <p:panelGrid columnClasses="value">
-                <p:schedule value="#{publicEventBean.eventModel}" timeZone="GMT+2" timeFormat="HH:mm" style="width: 50%; margin: 0 auto; color: white" locale="pl">
+                <p:schedule value="#{publicEventBean.eventModel}" timeZone="GMT+2" timeFormat="HH:mm" style="width: 50%; margin: 0 auto; color: white" locale="pl" draggable="false">
                     <p:ajax event="eventSelect" listener="#{publicEventBean.onEventSelect}" update="eventDialog" oncomplete="PF('dialog').show();"/>
                 </p:schedule>
             </p:panelGrid>
@@ -24,9 +24,9 @@
                     <h:outputText value="Wolnych miejsc: "/>
                     <h:outputText value="#{publicEventBean.freeTicket()}"/>
                     <h:outputText value="Imię: "/>
-                    <p:inputText value="#{publicEventBean.user.firstName}" required="true"/>
+                    <p:inputText value="#{publicEventBean.user.firstName}" required="true" requiredMessage="Nie wpisałeś imienia"/>
                     <h:outputText value="Nazwisko: "/>
-                    <p:inputText value="#{publicEventBean.user.secondName}" required="true">
+                    <p:inputText value="#{publicEventBean.user.secondName}" required="true" requiredMessage="Nie wpisałeś nazwiska">
                         <f:validateLength minimum="3"/>
                     </p:inputText>
                     <h:outputText value=" "/>

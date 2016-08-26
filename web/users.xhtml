@@ -41,17 +41,19 @@
         <h:form id="dlgUserForm">
             <p:panelGrid columns="2">
                 <p:outputLabel value="Login"/>
-                <p:inputText value="#{userBean.user.login}"/>
+                <p:inputText value="#{userBean.user.login}" required="true" requiredMessage="Prosze podać login"/>
                 <p:outputLabel value="Hasło"/>
-                <p:password value="#{userBean.user.password}"/>
+                <p:password value="#{userBean.user.password}" required="true" requiredMessage="Prosze podać hasło"/>
                 <p:outputLabel value="Imię"/>
-                <p:inputText value="#{userBean.user.firstName}"/>
+                <p:inputText value="#{userBean.user.firstName}" required="true" requiredMessage="Proszę podać imię"/>
                 <p:outputLabel value="Nazwisko"/>
-                <p:inputText value="#{userBean.user.secondName}"/>
+                <p:inputText value="#{userBean.user.secondName}" required="true" requiredMessage="Proszę podać nazwisko"/>
                 <p:outputLabel value="E-mail"/>
-                <p:inputText value="#{userBean.user.email}"/>
-                <p:outputLabel value="Data"/>
-                <p:calendar value="#{userBean.user.date}"/>
+                <p:inputText value="#{userBean.user.email}" required="true" requiredMessage="Proszę podać e-mail"/>
+                <p:outputLabel value="Data urodzenia"/>
+                <p:calendar value="#{userBean.user.date}" required="true" requiredMessage="Proszę podać datę" pattern="dd-MM-yyyy">
+                    <f:convertDateTime pattern="dd-MM-yyy"/>
+                </p:calendar>
                 <p:outputLabel value="Typ"/>
                 <p:selectOneMenu id="type" value="#{userBean.user.type}">
                     <f:selectItem itemLabel="Normalny" itemValue="1"/>

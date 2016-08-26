@@ -10,10 +10,12 @@ import entity.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
 /**
@@ -22,7 +24,7 @@ import javax.persistence.EntityManager;
  */
 @ManagedBean(name = "userBean")
 @RequestScoped
-public class UserBean {
+public class UserBean extends CheckBean {
     private User user = new User();
     private List<User> users = new ArrayList<User>();
     private List<User> uncheckedUser = new ArrayList<User>();
@@ -60,6 +62,11 @@ public class UserBean {
         this.user= new User();
     }
     public void addUser(int checked){
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(super.checkUser(user.getLogin())){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Uwaga!", "Istnieje już użytkownik o podanym loginie"));
+            return;
+        }
         EntityManager em = DBManager.getManager().createEntityManager();
         em.getTransaction().begin();
         user.setIduser(null);
@@ -70,6 +77,8 @@ public class UserBean {
         em.getTransaction().commit();
         em.close();
         this.user = new User();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Udało się!", "Użytkownik zarejestrowany"));
+        
     }
     public void deleteUser(){
         EntityManager em = DBManager.getManager().createEntityManager();

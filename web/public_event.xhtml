@@ -9,7 +9,7 @@
         <h:form>
             <p:growl id="growl" showDetail="true" sticky="true" redisplay="false" globalOnly="true"/> 
             <p:panelGrid columnClasses="value">
-                <p:schedule value="#{publicEventBean.eventModel}" timeZone="GMT+2" timeFormat="HH:mm" style="width: 50%; margin: 0 auto" locale="pl">
+                <p:schedule value="#{publicEventBean.eventModel}" timeZone="GMT+2" timeFormat="HH:mm" style="width: 50%; margin: 0 auto" locale="pl" draggable="false">
                     <p:ajax event="eventSelect" listener="#{publicEventBean.onEventSelect}" update="eventDialog" oncomplete="PF('dialog').show();"/>
                 </p:schedule>
             </p:panelGrid>
