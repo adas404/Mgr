@@ -20,6 +20,9 @@
                 <h:outputText value="#{showTimelineView.reservation.idshow.date}"/>
                 <h:outputText value="Adres: "/>
                 <h:outputText value="#{showTimelineView.reservation.idshow.address}"/>
+                <h:outputText value="Rezygnacja"/>
+                <p:commandButton value="Zrezygnuj" action="#{showTimelineView.deleteRes()}" ajax="false" rendered="#{! showTimelineView.copareToActualDate()}"/>
+                <h:outputText value=" " rendered="#{showTimelineView.copareToActualDate()}"/>
                 <h:outputText value="Lista uczestników: "/>
                 <p:dataList value="#{showTimelineView.reservation.idshow.reservationCollection}" var="res">    
                     <p:row rendered="#{res.checked == 1}">

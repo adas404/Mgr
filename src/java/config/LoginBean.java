@@ -30,6 +30,14 @@ public class LoginBean {
         return user;
     }
 
+    public User getCheckUser() {
+        return checkUser;
+    }
+
+    public void setCheckUser(User checkUser) {
+        this.checkUser = checkUser;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -47,7 +55,7 @@ public class LoginBean {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         FacesContext context = FacesContext.getCurrentInstance();
         try{
-            checkUser = (User) em.createQuery("SELECT u FROM User u WHERE u.login=:log AND u.password=:pass")
+            checkUser = (User) em.createQuery("SELECT u FROM User u WHERE u.login=:log AND u.password=:pass AND u.checked=1")
                     .setParameter("log", this.user.getLogin()).setParameter("pass", this.user.getPassword()).getSingleResult();
             HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false); 
             session.setAttribute("id", checkUser.getIduser());
@@ -56,7 +64,7 @@ public class LoginBean {
         }catch(NoResultException e){
             user = new User();
             this.notLogged = true;
-            context.addMessage(null, new FacesMessage("Przykro nam!", "Nie udało się zalogować."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Przykro nam!", "Nie udało się zalogować."));
             return "index";
         }
         context.addMessage(null, new FacesMessage("Gratulacje", "Zalogowano pomyślnie"));

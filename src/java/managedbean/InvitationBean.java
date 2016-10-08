@@ -6,10 +6,12 @@
 package managedbean;
 
 import config.DBManager;
+import config.LoginBean;
 import entity.Reservation;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -25,6 +27,17 @@ public class InvitationBean extends CheckBean{
 
     private List<Reservation> invitationList = new ArrayList<>();
     private Reservation invitation = new Reservation();
+    
+    @ManagedProperty(value="#{loginBean}")
+    private LoginBean loginBean;
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
 
     public Reservation getInvitation() {
         return invitation;
@@ -56,6 +69,11 @@ public class InvitationBean extends CheckBean{
         em.merge(this.invitation);
         em.getTransaction().commit();
         em.close();
+        try{
+            MailSender.sendEmailWithAttachments(loginBean.getCheckUser().getEmail(), "Potwierdzenie rezerwacji miejsca na wydarzenie", "Dziekujemy!Zarezerwowales miejsce na wydarzenie "+this.invitation.getIdshow().getName());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     public void discard(){
         EntityManager em = DBManager.getManager().createEntityManager();

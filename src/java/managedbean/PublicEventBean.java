@@ -6,6 +6,7 @@
 package managedbean;
 
 import config.DBManager;
+import config.LoginBean;
 import entity.Event;
 import entity.Reservation;
 import entity.User;
@@ -15,6 +16,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -32,6 +34,17 @@ import org.primefaces.model.ScheduleModel;
 @ManagedBean(name = "publicEventBean")
 @ViewScoped
 public class PublicEventBean extends CheckBean {
+    
+    @ManagedProperty(value="#{loginBean}")
+    private LoginBean loginBean;
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
 
     private ScheduleModel eventModel;
     private ScheduleEvent event = new DefaultScheduleEvent();
@@ -112,6 +125,11 @@ public class PublicEventBean extends CheckBean {
         em.persist(tmpRes);
         em.getTransaction().commit();
         em.close();
+        try{
+            MailSender.sendEmailWithAttachments(loginBean.getCheckUser().getEmail(), "Potwierdzenie rezerwacji miejsca na wydarzenie", "Dziękujemy!Zarezerwowales miejsce na wydarzenie "+e.getName());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         context.addMessage(null, new FacesMessage("Udało się!", "Twoje miejsce na impreze zostało zarezerwowane"));
     }
     public void bookPublic(){

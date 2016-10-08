@@ -13,7 +13,7 @@
         <title>System rezerwacji miejsc na imprezach</title>
     </h:head>
 
-    <h:body>
+    <h:body  onload="accordion.unselect(0)">
 
         <div id="top" class="top">
             <h:form id="menu_form">
@@ -32,6 +32,7 @@
                     <p:menuitem value="Rejestracja" oncomplete="PF('dlgUserRegister').show()" rendered="#{loginBean.notLogged}"/>
                     <p:menuitem value="Logowanie" oncomplete="PF('dlgUserLogin').show()" rendered="#{loginBean.notLogged}" update=":dlgUserLoginForm"/>
                     <p:menuitem value="Wyloguj" action="#{loginBean.logout()}" update=":menu_form" rendered="#{! loginBean.notLogged}"/>
+                    <p:menuitem value="Pomoc" onclick="PF('dlgHelp').show()"/>
                 </p:menubar>
             </h:form>
             
@@ -65,6 +66,34 @@
                         <p:password value="#{loginBean.user.password}" required="true" requiredMessage="Proszę podać hasło"/>
                     </p:panelGrid>
                     <p:commandButton value="Zatwierdź" actionListener="#{loginBean.checkLogin()}" oncomplete="PF('dlgUserLogin').hide()" update=":menu_form"/>
+                </h:form>
+            </p:dialog>
+            <p:dialog widgetVar="dlgHelp" header="Okno pomocy" >
+                <h:form id="dlgHelpId" style="width: 500px">
+                    <p:accordionPanel >
+                        <p:tab title="Rejestracja" >
+                            W celu rejestracji należy wybrać z górnego menu przycisk "Rejestracja", a następnie wprowadzić dane do formularza. 
+                            UWAGA! Wszystkie informację są wymagane, jeśli którejś nie wprowadzisz rejestracja się nie powiedzie.
+                            Do systemu będziesz mógł się zalogować dopiero po zaakceptowaniu przez administratora systemu Twojego użytkownika.
+                        </p:tab>
+                        <p:tab title="Logowanie">
+                            W celu zalogowania do systemu należy wybrać z górnego menu przycisk "Logowanie", a nastepnie wprowadziś login i hasło w odpowiednie pola. 
+                            O pomyślnym logowaniu zostaniesz poinformowany stosownym komunikatem. Po zalogowaniu będziesz miał dostęp do funkcjonalności systemu.
+                        </p:tab>
+                        <p:tab title="Imprezy, w których weźmiesz udział">
+                            W zakładce "Imprezy -> Weźmiesz udział" są dostępne imprezy, w których weźmiesz lub kiedykolwiek wziąłeś udział. Są one wyświetlone na lini czasu, aby przybliżyć 
+                            lub oddalić widok należy użyć CTRL + scroll lub posłużyć się przyciskami nawigacyjnymi. 
+                            W celu poznania szczegółów imprezy należy kliknąć na jej nazwę na osi czasu.
+                        </p:tab>
+                        <p:tab title="Zaproszenia">
+                            W zakładce "Imprezy -> Zaproszenia" są dostępne zaproszenia na imprezy prywatne. W celu potwierdzenia przybycia na imprezę należy kliknąć na interesujący 
+                            nas rekord, następnie na dole tabeli pojawią się przyciski "Potwierdź" lub "Odrzuć". Jeśli przyciski się nie pojawią oznacza to, że nie ma już miejsc na wskazanej imprezie. 
+                        </p:tab>
+                        <p:tab title="Udział w imprezach publicznych">
+                            W celu wzięcia udziału w imprezie publicznej należy przejść do zakładki "Imprezy -> Publiczne", następnie wybrać interesującą imprezę i potwierdzić
+                            wybór w oknie dialogowych. Jeśli przycisk "Potwierdź" w oknie dialogowym jest zablokowany oznacza to, że aktualnie nie ma miejsc na imprezie. 
+                        </p:tab>
+                    </p:accordionPanel>
                 </h:form>
             </p:dialog>
         </div>

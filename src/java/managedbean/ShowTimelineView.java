@@ -4,15 +4,17 @@
  * and open the template in the editor.
  */
 package managedbean;
-
 import config.DBManager;
+import config.LoginBean;
 import entity.Reservation;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -28,7 +30,18 @@ import org.primefaces.model.timeline.TimelineModel;
 @ManagedBean(name = "showTimelineView")
 @ViewScoped
 public class ShowTimelineView {
+    
+    @ManagedProperty(value="#{loginBean}")
+    private LoginBean loginBean;
 
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
+    
     private TimelineModel model;
     private Reservation reservation;
 
@@ -62,6 +75,29 @@ public class ShowTimelineView {
         reservation = new Reservation();
     }
 
+    public String deleteRes(){
+        EntityManager em = DBManager.getManager().createEntityManager();
+        em.getTransaction().begin();
+       reservation = em.find(Reservation.class, reservation.getIdreservation());
+        em.remove(reservation);
+        em.getTransaction().commit();
+        em.close();
+        
+        try{
+            MailSender.sendEmailWithAttachments(loginBean.getCheckUser().getEmail(), "Potwierdzenie rezygnacji z wydarzenia", "Przykro nam! Zrezygnowales z wydarzenia "+reservation.getIdshow().getName());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        this.init();
+        return "confirm_invitation.xhtml";
+   }
+    
+    public boolean copareToActualDate(){
+        Date date = new Date();
+        if (date.getTime()>reservation.getIdshow().getDate().getTime())
+            return true;
+        else return false;
+    } 
     private Calendar dateToCalendar(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
